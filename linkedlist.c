@@ -18,7 +18,12 @@ list_ptr list_new(void)
  * */
 list_ptr list_add(sprite_t sprite, list_ptr list)
 {
-  return NULL;
+  list_ptr l_tmp = list;
+  while (l_tmp->next != NULL) l_tmp = l_tmp->next;
+  list_ptr nl = list_new();
+  nl->data = sprite;
+  l_tmp->next = nl;
+  return list;
 }
 
 /* Return true if the list is empty
