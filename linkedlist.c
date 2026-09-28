@@ -38,7 +38,8 @@ bool list_is_empty(list_ptr l)
  * */
 list_ptr list_next(list_ptr l)
 {
-  return NULL;
+  if (l == NULL || l->next == NULL) return NULL;
+  return l->next;
 }
 
 /* Search the first cel of the list & 
@@ -55,7 +56,10 @@ sprite_t list_head_sprite(list_ptr l)
  * */
 sprite_t list_pop_sprite(list_ptr * l)
 {
-  return NULL;
+  while (l->next != NULL) l = l->next;
+  sprite_t s = l->data;
+  free(l);
+  return s;
 }
 
 /* Remove the given cel in a list
@@ -69,6 +73,11 @@ void list_remove(list_ptr elt, list_ptr *l)
  * */
 void list_free(list_ptr l)
 {
+  if (l->next != NULL) {
+    list_free(l->next);
+  }
+  sprite_free(l->data);
+  free(l);
 }
 
 /* Return the length of a list
