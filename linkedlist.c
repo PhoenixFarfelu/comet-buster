@@ -66,7 +66,10 @@ void list_free(list_ptr l)
  * */
 int list_length(list_ptr l)
 {
-  return 0;
+  if (l == NULL) return 0;
+  int cpt = 1;
+  while((l = l->next) != NULL) cpt++;
+  return cpt;
 }
 
 /* Reverse the order of a list
