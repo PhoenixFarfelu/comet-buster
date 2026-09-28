@@ -7,7 +7,10 @@
  * */
 list_ptr list_new(void)
 {
-  return NULL;
+  l = malloc(sizeof(list_node));
+  l->data == NULL;
+  l->next == NULL;
+  return l;
 }
 
 /* Add a new cel to a list. 
@@ -22,7 +25,8 @@ list_ptr list_add(sprite_t sprite, list_ptr list)
  * */
 bool list_is_empty(list_ptr l)
 {
-  return true;
+  if (l == NULL) return true;
+  return false;
 }
 
 /* Return the next cel in list or NULL
