@@ -7,9 +7,9 @@
  * */
 list_ptr list_new(void)
 {
-  l = malloc(sizeof(list_node));
-  l->data == NULL;
-  l->next == NULL;
+  list_ptr l = malloc(sizeof(struct list_node));
+  l->data = NULL;
+  l->next = NULL;
   return l;
 }
 
@@ -56,9 +56,13 @@ sprite_t list_head_sprite(list_ptr l)
  * */
 sprite_t list_pop_sprite(list_ptr * l)
 {
-  while (l->next != NULL) l = l->next;
-  sprite_t s = l->data;
-  free(l);
+  while ((*l)->next != NULL) l = &(*l)->next;
+
+  list_ptr last = *l;
+  sprite_t s = last->data;
+  
+  *l = NULL;
+  free(last);
   return s;
 }
 
@@ -94,6 +98,14 @@ int list_length(list_ptr l)
  * */
 void list_reverse(list_ptr * l)
 {
+  list_ptr hold_l = *l;
+  while (hold_l->next != NULL){
+    list_ptr new_l = hold_l->next;
+    hold_l->next = new_l->next;
+    // Ajoute à la tête le terme qui suit le premier terme de la liste non reverse
+    new_l->next = *l;
+    *l = new_l;
+  }
 }
 
 /* Copy a list to another one. 
