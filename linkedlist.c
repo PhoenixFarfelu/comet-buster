@@ -47,7 +47,8 @@ list_ptr list_next(list_ptr l)
  * */
 sprite_t list_head_sprite(list_ptr l)
 {
-  return NULL;
+  if (l == NULL) return NULL;
+  return l->data;
 }
 
 /* Search the last cel of a list 
@@ -70,6 +71,16 @@ sprite_t list_pop_sprite(list_ptr * l)
  * */
 void list_remove(list_ptr elt, list_ptr *l)
 {
+  if ((l == NULL) || (elt == NULL)) return;
+  list_ptr previous = NULL;
+  while (*l != elt) {
+    previous = *l;
+    l = &(*l)->next;
+  }
+  if (l != NULL) {
+    previous->next = (*l)->next;
+    free(l);
+  }
 }
 
 /* Wipe out a list. 
@@ -113,5 +124,15 @@ void list_reverse(list_ptr * l)
  * */
 list_ptr list_clone(list_ptr list)
 {
-  return NULL;
+  if (list == NULL) return NULL;
+  list_ptr l_new = list_new();
+  list_ptr l_new_head = l_new;
+  do {
+    l_new->data = list->data;
+    l_new->next = list_new();
+    l_new = l_new->next;
+  } while((list = list->next) != NULL);
+  free(l_new->next);
+  l_new->next = NULL;
+  return l_new_head;
 }
