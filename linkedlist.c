@@ -98,7 +98,7 @@ void list_free(list_ptr l)
   if (l->next != NULL) {
     list_free(l->next);
   }
-  sprite_free(l->data);
+  if (l->data != NULL) sprite_free(l->data);
   free(l);
 }
 
