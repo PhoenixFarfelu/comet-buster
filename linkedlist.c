@@ -18,6 +18,11 @@ list_ptr list_new(void)
  * */
 list_ptr list_add(sprite_t sprite, list_ptr list)
 {
+  if (list == NULL) {
+    list_ptr l = list_new();
+    l->data = sprite;
+    return l;
+  }
   list_ptr l_tmp = list;
   while (l_tmp->next != NULL) l_tmp = l_tmp->next;
   list_ptr nl = list_new();
@@ -57,6 +62,7 @@ sprite_t list_head_sprite(list_ptr l)
  * */
 sprite_t list_pop_sprite(list_ptr * l)
 {
+  if (l == NULL) return NULL;
   while ((*l)->next != NULL) l = &(*l)->next;
 
   list_ptr last = *l;
@@ -72,14 +78,14 @@ sprite_t list_pop_sprite(list_ptr * l)
 void list_remove(list_ptr elt, list_ptr *l)
 {
   if ((l == NULL) || (elt == NULL)) return;
-  list_ptr previous = NULL;
-  while (*l != elt) {
+  list_ptr previous = *l;
+  while ((*l != elt) || (l == NULL)) {
     previous = *l;
     l = &(*l)->next;
   }
   if (l != NULL) {
     previous->next = (*l)->next;
-    free(l);
+    free(*l);
   }
 }
 
@@ -88,6 +94,7 @@ void list_remove(list_ptr elt, list_ptr *l)
  * */
 void list_free(list_ptr l)
 {
+  if (l == NULL) return;
   if (l->next != NULL) {
     list_free(l->next);
   }
@@ -109,6 +116,7 @@ int list_length(list_ptr l)
  * */
 void list_reverse(list_ptr * l)
 {
+  if (l == NULL) return;
   list_ptr hold_l = *l;
   while (hold_l->next != NULL){
     list_ptr new_l = hold_l->next;
