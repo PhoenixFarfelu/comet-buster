@@ -14,6 +14,7 @@
 #define BULLET_SPEED        10
 #define DEFAULT_PTSIZE      24
 #define NUMBER_OF_LIFES     5
+#define MAX_LENTH_NIKCNAME  50
 #include "level.h"
 
 #define GDB()  __asm__("int $0x3")
@@ -28,10 +29,14 @@ list_ptr l_sprite_explosion;
 list_ptr l_sprite_text;
 list_ptr l_sprite_life_counter;
 list_ptr l_score_el = NULL;
+list_ptr l_max_score_el = NULL;
 
 bool shoot_again;
 int score;
+int max_score = -1;
 int level = LEVEL_MIN;
+char nickname_max_score[MAX_LENTH_NIKCNAME] = "Guest";
+char nickname_user[MAX_LENTH_NIKCNAME] = "Guest";
 
 /* Declaration of few prototypes because there is no .h file with them */
 int init_sdl(void);
@@ -41,10 +46,15 @@ void draw_explosion(int i,int j);
 void draw_fire(void);
 void draw_life_counter(void);
 void draw_score(TTF_Font *font);
+void draw_max_score(TTF_Font *font);
 void next_level(TTF_Font *font);
 void draw_sprites(list_ptr *l_sprite);
 void split(sprite_t old_comet, list_ptr **l_sprite_comet, enum sprite_type new_type);
 void split_and_score(list_ptr element, list_ptr *l_sprite_comet, bool update_score);
+void read_max_score(void);
+void save_score(const char *nickname, int s);
+void ask_nickname(void);
+
 
 /* SDL Initialisation. Create windows and so on
  *  return 0 if everything is ok, otherwise 1.
@@ -167,6 +177,21 @@ void draw_score(TTF_Font * font) {
   if (l_score_el)
     list_remove(l_score_el, &l_sprite_text);
   l_score_el = l_sprite_text = list_add(sprite, l_sprite_text);
+}
+
+void draw_max_score(TTF_Font * font) {
+  if (max_score == -1) return;
+  SDL_Surface *score_surf_max;
+  SDL_Color score_color = {255, 0, 0, 0};
+  char score_text_max[1024];
+  sprite_t sprite;
+
+  sprintf(score_text_max, "%s:%08d", nickname_max_score ,max_score);
+  score_surf_max = TTF_RenderText_Solid(font, score_text_max, score_color);
+  sprite = sprite_new_text(score_surf_max, 5, 55);
+  if (l_max_score_el)
+    list_remove(l_max_score_el, &l_sprite_text);
+  l_max_score_el = l_sprite_text = list_add(sprite, l_sprite_text);
 }
 
 /* Draw the life counter sprites
@@ -309,7 +334,42 @@ void split(sprite_t old_comet, list_ptr **l_sprite_comet, enum sprite_type new_t
   **l_sprite_comet = list_add(second, **l_sprite_comet);
 }
 
+void read_max_score(void){
+  FILE *f;
+  f = fopen("scores.txt","r");
+  if (f == NULL) {
+    perror("fopen");
+    return ;
+  }
+  // Find max
+  char nickname[50];
+  int s = 0;
+  while (fscanf(f,"%49[^:]:%d\n",nickname,&s) == 2){
+    if (max_score < s) {
+      max_score = s;
+      strcpy(nickname_max_score,nickname);
+    }
+  }
+}
 
+void save_score(const char *nickname, int s){
+  FILE *f;
+  f = fopen("scores.txt", "a");
+  if (f == NULL) {
+    perror("fopen");
+    return ;
+  }
+  fprintf(f,"%s:%d\n",nickname,s);
+}
+
+void ask_nickname(void){
+  printf("Nickname (a-zA-Z0-9) : ");
+  char c;
+  while (scanf("%49[a-zA-Z0-9]", nickname_user) != 1) {
+    while ((c = getchar()) != '\n');
+    printf("Nickname (a-zA-Z0-9): ");
+  }
+}
 
 int main(int argc, char* argv[]) {
   SDL_Surface *temp, *bg;
@@ -331,10 +391,9 @@ int main(int argc, char* argv[]) {
     SDL_Quit();
     return(ret);
   }
-
   // default colorkey
   colorkey = SDL_MapRGB(screen->format, 255, 0, 255);
-
+  read_max_score();
   // fonts
   font_score = TTF_OpenFont("fonts/LinLibertine_DR.ttf", 24);
   font_next_level = TTF_OpenFont("fonts/LinLibertine_DR.ttf", 36);;
@@ -344,6 +403,7 @@ int main(int argc, char* argv[]) {
 
   // initialize score and score sprite
   score = 0;
+  draw_max_score(font_score);
   draw_score(font_score);
   draw_life_counter();
 
@@ -449,6 +509,7 @@ int main(int argc, char* argv[]) {
           list_remove(list_el_c, &l_sprite_comet);
           list_remove(list_el, &l_sprite_bullet);
           // update the score display
+          draw_max_score(font_score);
           draw_score(font_score);
           break;
         }
@@ -482,6 +543,8 @@ int main(int argc, char* argv[]) {
   }//loop !gameover
 
   printf("Bye bye.\n");
+
+  
   /* free the space_ship sprite */
   sprite_free(sprite_ship);
   /* free the background surface */
@@ -492,6 +555,8 @@ int main(int argc, char* argv[]) {
   TTF_Quit();
   /* cleanup SDL */
   SDL_Quit();
+  ask_nickname();
+  save_score(nickname_user, score);
   return 0;
 }//main
 

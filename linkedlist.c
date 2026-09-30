@@ -76,16 +76,13 @@ sprite_t list_pop_sprite(list_ptr * l)
  * */
 void list_remove(list_ptr elt, list_ptr *l)
 {
-  if ((l == NULL) || (elt == NULL)) return;
-  list_ptr previous = *l;
-  while ((*l != elt) || (l == NULL)) {
-    previous = *l;
+  if (l == NULL || elt == NULL) return;
+  while (*l != NULL && *l != elt) {
     l = &(*l)->next;
   }
-  if (l != NULL) {
-    previous->next = (*l)->next;
-    free(*l);
-  }
+  if (*l == NULL) return;
+  *l = elt->next;
+  free(elt);
 }
 
 /* Wipe out a list. 
@@ -135,6 +132,7 @@ list_ptr list_clone(list_ptr list)
   list_ptr l_new = list_new();
   list_ptr l_new_head = l_new;
   do {
+    // Copie du pointeur du sprite. Les deux elements pointent vers le même endroit 
     l_new->data = list->data;
     l_new->next = list_new();
     l_new = l_new->next;

@@ -1,3 +1,9 @@
-toto42:1000
-schtroumpf:470
-paupaul:20
+Guest:170
+Guest:70
+Guest:120
+TheRealBest:1580
+Guest:380
+Guest:270
+Guest:170
+R00t:0
+Brt:1060
