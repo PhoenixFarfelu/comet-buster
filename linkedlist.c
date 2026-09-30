@@ -18,7 +18,7 @@ list_ptr list_new(void)
  * */
 list_ptr list_add(sprite_t sprite, list_ptr list)
 {
-  if (list == NULL) {
+  if ((list == NULL) || (list->data == NULL)) {
     list_ptr l = list_new();
     l->data = sprite;
     return l;
