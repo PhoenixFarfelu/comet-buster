@@ -2,6 +2,25 @@
 README
 ======
 
+========================
+0. RECAP de l'avancement
+========================
+Meven BOONE
+Neven LOUËR
+
+Avantages :
+- Recuperation du pseudo du joueur en fin de partie (via le terminal)
+- Meilleur score bien enregistre
+- Affichage du meilleur score en début de partie (pas pendant)
+- Affichage du pseudo associé au meilleur score
+Desavantage :
+- liste_clone en copie non profonde
+- Pas d'interface graphique pour la recuperation du pseudo du joueur
+- Lors de la recuperation du pseudo, ce dernier est tronqué pour ne conserver que les lettre et chiffres non accentue [A-Za-z0-1]
+- le champs de saisie du pseudo n'est pas securise contre les injections
+- Bug d'affichage du score. Un autre element semble apparaitre desous : BUG non traite
+
+---------------------------------------------------------------------
 1. Compiling & running
 2. Sprites conventions
 3. Playing
@@ -100,4 +119,5 @@ o        o         o      o     +
     o           +
 +      +     o        o      +  
 
-
+Meven BOONE
+Neven LOUËR
