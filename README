@@ -20,6 +20,15 @@ Desavantage :
 - le champs de saisie du pseudo n'est pas securise contre les injections
 - Bug d'affichage du score. Un autre element semble apparaitre desous : BUG non traite
 
+Neven LOUËR:
+Fonctions implémenté dans linkedlist.c : list_add, list_next, list_pop_sprite, list_free, list_reverse
+Fonctions implémenté dans main.c : 
+- read_max_score : lit le score le plus grand dans le fichier "scores.txt",
+- save_score : Enregistre le score du joueur qui vient de jouer à la fin du fichier "scores.txt" au format "nickname:score", 
+- ask_nickname : Demande le nom dans à la fin de la partie dans le terminal avec un scanf.
+
+Lors de ce projet, l'IA à été utiliser pour mieux comprendre l'utilité d'un pointeur de pointeur. Elle a aussi été utiliser pour la lecture du nom dans le terminal en utilisant des regex. 
+
 ---------------------------------------------------------------------
 1. Compiling & running
 2. Sprites conventions
