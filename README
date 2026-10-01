@@ -10,24 +10,30 @@ Neven LOUËR
 
 Avantages :
 - Recuperation du pseudo du joueur en fin de partie (via le terminal)
-- Meilleur score bien enregistre
+- Meilleur score bien enregistré
 - Affichage du meilleur score en début de partie (pas pendant)
 - Affichage du pseudo associé au meilleur score
 Desavantage :
 - liste_clone en copie non profonde
-- Pas d'interface graphique pour la recuperation du pseudo du joueur
-- Lors de la recuperation du pseudo, ce dernier est tronqué pour ne conserver que les lettre et chiffres non accentue [A-Za-z0-1]
-- le champs de saisie du pseudo n'est pas securise contre les injections
-- Bug d'affichage du score. Un autre element semble apparaitre desous : BUG non traite
+- Pas d'interface graphique pour la récupération du pseudo du joueur
+- Lors de la récupération du pseudo, ce dernier est tronqué pour ne conserver que les lettres et chiffres non accentués [A-Za-z0-1]
+- le champ de saisie du pseudo n'est pas sécurisé contre les injections
+- Bug d'affichage du score. Un autre élément semble apparaître desous : BUG non traité
+
+Meven BOONE:
+Fonctions implémenté dans linkedlist.c : list_new, list_is_empty, list_head_sprite, list_remove, list_length, list_clone
+Fonctions implémenté dans main.c : 
+- draw_max_score : affiche le score maximal ainsi que le pseudo qui y est associé, au début de la partie (repris depuis draw_score)
+
 
 Neven LOUËR:
 Fonctions implémenté dans linkedlist.c : list_add, list_next, list_pop_sprite, list_free, list_reverse
 Fonctions implémenté dans main.c : 
-- read_max_score : lit le score le plus grand dans le fichier "scores.txt",
-- save_score : Enregistre le score du joueur qui vient de jouer à la fin du fichier "scores.txt" au format "nickname:score", 
-- ask_nickname : Demande le nom dans à la fin de la partie dans le terminal avec un scanf.
+- read_max_score : lit le score le plus grand dans le fichier "scores.txt"
+- save_score : Enregistre le score du joueur qui vient de jouer à la fin du fichier "scores.txt" au format "nickname:score"
+- ask_nickname : Demande le nom dans à la fin de la partie dans le terminal avec un scanf
 
-Lors de ce projet, l'IA à été utiliser pour mieux comprendre l'utilité d'un pointeur de pointeur. Elle a aussi été utiliser pour la lecture du nom dans le terminal en utilisant des regex. 
+Lors de ce projet, l'IA a été utilisée pour mieux comprendre l'utilité d'un pointeur de pointeur. Elle a aussi été utilisée pour la lecture du nom dans le terminal en utilisant des regex.
 
 ---------------------------------------------------------------------
 1. Compiling & running
